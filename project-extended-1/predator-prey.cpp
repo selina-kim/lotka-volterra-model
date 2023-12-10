@@ -88,8 +88,8 @@ int main()
   ofstream outputfile_raw;
   ofstream outputfile_peaks;
 
-  outputfile_raw.open("project-extended-1-raw.txt");
-  outputfile_peaks.open("project-extended-1-peaks.txt");
+  outputfile_raw.open("project-extended-1-raw.csv");
+  outputfile_peaks.open("project-extended-1-peaks.csv");
 
   /* get x1, x2, y, n, t_end */
   // get_var_inputs();
@@ -106,25 +106,17 @@ int main()
   /* pgplot variables */
   float tp[n+1], x1p[n+1], x2p[n+1], yp[n+1];
 
-  outputfile_raw << "prey 1 growth rate = " << prey_1_growth << endl << "prey 1 death rate = " << prey_1_death << endl
-        << "prey 2 growth rate = " << prey_2_growth << endl << "prey 2 death rate = " << prey_2_death << endl 
-        << "predator growth rate = " << predator_growth << endl << "predator death rate = " << predator_death << endl
-        << "x1 = " << x1 << endl << "x2 = " << x2 << endl << "y = " << y << endl << "n = " << n << endl << "t (days) = " << t_end << endl << endl
-        << "| " << setw(10) << "timestep | "
-        << setw(15) << "x1 | "
-        << setw(15) << "x2 | "
-        << setw(15) << "y | "
-        << endl << "|" << setw(56) << setfill('-') << "|" << endl;
+  outputfile_raw << "prey 1 growth rate," << prey_1_growth << endl << "prey 1 death rate," << prey_1_death << endl
+        << "prey 2 growth rate," << prey_2_growth << endl << "prey 2 death rate," << prey_2_death << endl 
+        << "predator growth rate," << predator_growth << endl << "predator death rate," << predator_death << endl
+        << "x1," << x1 << endl << "x2," << x2 << endl << "y," << y << endl << "n," << n << endl << "t (days)," << t_end << endl << endl
+        << "timestep,x1,x2,y" << endl;
 
-  outputfile_peaks << "prey 1 growth rate = " << prey_1_growth << endl << "prey 1 death rate = " << prey_1_death << endl
-        << "prey 2 growth rate = " << prey_2_growth << endl << "prey 2 death rate = " << prey_2_death << endl 
-        << "predator growth rate = " << predator_growth << endl << "predator death = " << predator_death << endl
-        << "x1 = " << x1 << endl << "x2 = " << x2 << endl << "y = " << y << endl << "n = " << n << endl << "t (days) = " << t_end << endl << endl
-        << "| " << setw(10) << "timestep | "
-        << setw(15) << "x1 | "
-        << setw(15) << "x2 | "
-        << setw(15) << "y | "
-        << endl << "|" << setw(56) << setfill('-') << "|" << endl;
+  outputfile_peaks << "prey 1 growth rate," << prey_1_growth << endl << "prey 1 death rate," << prey_1_death << endl
+        << "prey 2 growth rate," << prey_2_growth << endl << "prey 2 death rate," << prey_2_death << endl 
+        << "predator growth rate," << predator_growth << endl << "predator death," << predator_death << endl
+        << "x1," << x1 << endl << "x2," << x2 << endl << "y," << y << endl << "n," << n << endl << "t (days)," << t_end << endl << endl
+        << "timestep,x1,x2,y" << endl;
 
   /* rk4 process */
   for (;;) {
@@ -133,34 +125,22 @@ int main()
     x2p[i] = x2;
     yp[i] = y;
 
-    /* record to output.txt if peak of x1 */
+    /* record to output if peak of x1 */
     if (x1p[i-1] > x1p[i] && x1p[i-1] > x1p[i-2]) {
-      outputfile_peaks << "| " << setfill(' ') << setw(8) << t << " | "
-          << setw(12) << x1 << " | "
-          << setw(12) << "" << " | "
-          << setw(12) << "" << " | " << endl;
+      outputfile_peaks << t << "," << x1 << ",," << endl;
     }
 
-    /* record to output.txt if peak of x2 */
+    /* record to output if peak of x2 */
     if (x2p[i-1] > x2p[i] && x2p[i-1] > x2p[i-2]) {
-      outputfile_peaks << "| " << setfill(' ') << setw(8) << t << " | "
-          << setw(12) << "" << " | "
-          << setw(12) << x2 << " | "
-          << setw(12) << "" << " | " << endl;
+      outputfile_peaks << t << ",," << x2 << "," << endl;
     }
 
-    /* record to output.txt if peak of y */
+    /* record to output if peak of y */
     if (yp[i-1] > yp[i] && yp[i-1] > yp[i-2]) {
-      outputfile_peaks << "| " << setfill(' ') << setw(8) << t << " | "
-          << setw(12) << "" << " | "
-          << setw(12) << "" << " | "
-          << setw(12) << y << " | " << endl;
+      outputfile_peaks << t << ",,," << y << endl;
     }
 
-    outputfile_raw << "| " << setfill(' ') << setw(8) << t << " | "
-          << setw(12) << x1 << " | "
-          << setw(12) << x2 << " | "
-          << setw(12) << y << " | " << endl;
+    outputfile_raw << t << "," << x1 << "," << x2 << "," << y << endl;
 
     printProgress(t / t_end);
 

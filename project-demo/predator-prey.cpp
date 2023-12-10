@@ -79,8 +79,8 @@ int main()
   ofstream outputfile_raw;
   ofstream outputfile_peaks;
 
-  outputfile_raw.open("project-demo-raw.txt");
-  outputfile_peaks.open("project-demo-peaks.txt");
+  outputfile_raw.open("project-demo-raw.csv");
+  outputfile_peaks.open("project-demo-peaks.csv");
 
   /* get x, y, n, t_end */
   // get_var_inputs();
@@ -97,19 +97,13 @@ int main()
   /* pgplot variables */
   float tp[n+1], xp[n+1], yp[n+1];
 
-  outputfile_raw << "prey growth rate = " << prey_growth << endl << "prey death rate = " << predator_death << endl << "predator growth rate = " << predator_growth << endl << "predator death = " << predator_death << endl
-        << "x = " << x << endl << "y = " << y << endl << "n = " << n << endl << "t (days) = " << t_end << endl << endl
-        << "| " << setw(10) << "timestep | "
-        << setw(15) << "x | "
-        << setw(15) << "y | "
-        << endl << "|" << setw(41) << setfill('-') << "|" << endl;
+  outputfile_raw << "prey growth rate," << prey_growth << endl << "prey death rate," << predator_death << endl << "predator growth rate," << predator_growth << endl << "predator death," << predator_death << endl
+        << "x," << x << endl << "y," << y << endl << "n," << n << endl << "t (days)," << t_end << endl << endl
+        << "timestep,x,y" << endl;
 
-  outputfile_peaks << "prey growth rate = " << prey_growth << endl << "prey death rate = " << predator_death << endl << "predator growth rate = " << predator_growth << endl << "predator death = " << predator_death << endl
-        << "x = " << x << endl << "y = " << y << endl << "n = " << n << endl << "t (days) = " << t_end << endl << endl
-        << "| " << setw(10) << "timestep | "
-        << setw(15) << "x | "
-        << setw(15) << "y | "
-        << endl << "|" << setw(41) << setfill('-') << "|" << endl;
+  outputfile_peaks << "prey growth rate," << prey_growth << endl << "prey death rate," << predator_death << endl << "predator growth rate," << predator_growth << endl << "predator death," << predator_death << endl
+        << "x," << x << endl << "y," << y << endl << "n," << n << endl << "t (days)," << t_end << endl << endl
+        << "timestep,x,y" << endl;
 
   /* rk4 process */
   for (;;) {
@@ -117,23 +111,17 @@ int main()
     xp[i] = x;
     yp[i] = y;
 
-    /* record to output.txt if peak of x */
+    /* record to output if peak of x */
     if (xp[i-1] > xp[i] && xp[i-1] > xp[i-2]) {
-      outputfile_peaks << "| " << setfill(' ') << setw(8) << t << " | "
-          << setw(12) << x << " | "
-          << setw(12) << "" << " | " << endl;
+      outputfile_peaks << t << "," << x << "," << endl;
     }
 
-    /* record to output.txt if peak of y */
+    /* record to output if peak of y */
     if (yp[i-1] > yp[i] && yp[i-1] > yp[i-2]) {
-      outputfile_peaks << "| " << setfill(' ') << setw(8) << t << " | "
-          << setw(12) << "" << " | "
-          << setw(12) << y << " | " << endl;
+      outputfile_peaks << t << ",," << y << endl;
     }
 
-    outputfile_raw << "| " << setfill(' ') << setw(8) << t << " | "
-          << setw(12) << x << " | "
-          << setw(12) << y << " | " << endl;
+    outputfile_raw << t << "," << x << "," << y << endl;
 
     printProgress(t / t_end);
 
