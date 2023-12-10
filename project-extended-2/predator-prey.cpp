@@ -126,17 +126,17 @@ int main()
     yp[i] = y;
     zp[i] = z;
 
-    /* record to output.txt if peak of x */
+    /* record to output if peak of x */
     if (xp[i-1] > xp[i] && xp[i-1] > xp[i-2]) {
       outputfile_peaks << t << "," << x << ",," << endl;
     }
 
-    /* record to output.txt if peak of y */
+    /* record to output if peak of y */
     if (yp[i-1] > yp[i] && yp[i-1] > yp[i-2]) {
       outputfile_peaks << t << ",," << y << "," << endl;
     }
 
-    /* record to output.txt if peak of z */
+    /* record to output if peak of z */
     if (zp[i-1] > zp[i] && zp[i-1] > zp[i-2]) {
       outputfile_peaks << t << ",,," << z << endl;
     }
